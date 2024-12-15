@@ -1,21 +1,18 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="llm-dump-tool",
-    version="1.0.0",
-    description="A tool to dump various content sources into a single text file for LLM context",
-    author="Adrian Obleton",
-    author_email="obletonadrian@gmail.com",
+    name="llm-dump",
+    version="0.3.0",
     packages=find_packages(),
-    py_modules=["llm_dump"],
+    include_package_data=True,
     install_requires=[
+        "click",
         "pydantic",
-        "pathspec"
+        "pathspec",
     ],
     entry_points={
         "console_scripts": [
-            "llm-dump=llm_dump:main"
-        ]
+            "llm-dump=llm_dump.cli:cli",
+        ],
     },
-    python_requires=">=3.8",
 )
