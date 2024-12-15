@@ -4,17 +4,22 @@ import tempfile
 import os
 import re
 
-from llm_dump import (
+from llm_dump.utility_types import (
+    FileContent,
+    FolderTraversalInput,
     ObsidianTraversalInput,
+)
+from llm_dump.markdown import (
     extract_markdown_links,
     ensure_md_extension,
     traverse_markdown_files,
     dump_markdown_files,
+)
+from llm_dump.repo import (
     load_gitignore,
     generate_file_tree,
     traverse_folder,
-    FolderTraversalInput,
-    dump_files_to_text
+    dump_files_to_text,
 )
 
 @pytest.fixture
@@ -175,7 +180,6 @@ def test_dump_markdown_files(sample_vault):
     content = output_file.read_text()
     
     # Check that all file contents are included
-
     assert "Main File" in content
     assert "Second File" in content
     assert "Third File" in content
@@ -232,8 +236,6 @@ __pycache__/
     # Generate tree
     pathspec = load_gitignore(temp_dir)
     tree = generate_file_tree(temp_dir, pathspec=pathspec)
-
-    print("Tree:", tree)
     
     # Ensure the tree is split into lines correctly
     tree_lines = tree.split('\n')  # Use '\n' to split lines explicitly
@@ -320,7 +322,7 @@ def test_dump_files_to_text(temp_dir):
     assert "# README" in content
     assert "test.pyc" not in content
     assert "SECRET=123" not in content
-    
+
 def test_git_directory_ignored(temp_dir):
     """Test that .git directory is always ignored, even without .gitignore."""
     # Create a sample repository structure with .git directory
@@ -355,7 +357,7 @@ def test_git_directory_ignored(temp_dir):
     assert "README.md" in content
     assert "print('hello')" in content
     assert "# README" in content
-    
+
 def test_markdown_without_base_folder(temp_dir):
     """Test markdown processing when no base_folder is provided."""
     # Create a nested structure
