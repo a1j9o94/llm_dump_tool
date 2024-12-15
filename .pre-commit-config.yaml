@@ -1,0 +1,9 @@
+repos:
+  - repo: local
+    hooks:
+      - id: version-check
+        name: Check version consistency
+        entry: python scripts/check_versions.py
+        language: python
+        files: ^(pyproject\.toml|llm_dump/__init__\.py)$
+        additional_dependencies: ['tomli'] 
